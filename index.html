@@ -1682,7 +1682,7 @@ headers:{
 body:JSON.stringify({username,password})
 });
 
-const data = await res.json();
+const data = await res.text();
 
 alert(data.message);
 
@@ -2674,4 +2674,5 @@ function closeComboModal() {
     </div>
 </div>
 </body>
+
 </html>
