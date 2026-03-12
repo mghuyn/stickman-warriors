@@ -1,0 +1,2677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stickman Warriors - Game</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0a1a, #1a1a2e);
+          font-family: 'Press Start 2P', cursive;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            transition: background 0.3s ease;
+        }
+
+        /* Theme colors */
+        body.theme-blue { background: linear-gradient(135deg, #0a1a2a, #1a2a3a); }
+        body.theme-red { background: linear-gradient(135deg, #2a0a0a, #3a1a1a); }
+        body.theme-green { background: linear-gradient(135deg, #0a2a0a, #1a3a1a); }
+        body.theme-purple { background: linear-gradient(135deg, #1a0a2a, #2a1a3a); }
+        body.theme-orange { background: linear-gradient(135deg, #2a1a0a, #3a2a1a); }
+        body.theme-dark { background: linear-gradient(135deg, #0a0a1a, #1a1a2e); }
+
+        /* ==================== MÀN HÌNH LOGIN ==================== */
+        .login-container {
+            width: 500px;
+            height: 700px;
+            background: rgba(20, 20, 40, 0.95);
+            border: 6px solid gold;
+            border-radius: 40px;
+            padding: 35px;
+            box-shadow: 0 0 60px rgba(255, 215, 0, 0.6);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .login-container h1 {
+            color: gold;
+            font-size: 24px;
+            margin-bottom: 15px;
+            text-shadow: 4px 4px 0 #8b4513;
+            line-height: 1.4;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .input-group label {
+            color: white;
+            font-size: 12px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            background: #2a1a0a;
+            border: 3px solid gold;
+            border-radius: 15px;
+            color: gold;
+           font-family: 'Press Start 2P', cursive;
+            font-size: 11px;
+            outline: none;
+        }
+
+        .input-group input::placeholder {
+            color: #8b7355;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            background: #4a2a1a;
+            border: 3px solid gold;
+            border-radius: 20px;
+            color: gold;
+           font-family: 'Press Start 2P', cursive;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: #6a4a2a;
+            transform: translateY(-3px);
+        }
+
+        .message {
+            color: #ffaa00;
+            font-size: 11px;
+            margin: 10px 0;
+            min-height: 20px;
+        }
+
+        /* Theme Selector */
+        .theme-selector {
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 20px;
+        }
+
+        .theme-title {
+            color: gold;
+            font-size: 11px;
+            margin-bottom: 8px;
+        }
+
+        .theme-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+        }
+
+        .theme-btn {
+            padding: 8px;
+            border: 2px solid gold;
+            border-radius: 10px;
+            color: white;
+            font-size: 8px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .theme-btn.blue { background: #2a4a6a; }
+        .theme-btn.red { background: #6a2a2a; }
+        .theme-btn.green { background: #2a6a2a; }
+        .theme-btn.purple { background: #4a2a6a; }
+        .theme-btn.orange { background: #6a4a2a; }
+        .theme-btn.dark { background: #1a1a2a; }
+
+        .theme-btn:hover {
+            transform: scale(1.05);
+            border-color: orange;
+        }
+
+        /* ==================== MÀN HÌNH MENU ==================== */
+        .menu-container {
+            width: 700px;
+            height: 700px;
+            background: rgba(20, 20, 40, 0.98);
+            border: 6px solid gold;
+            border-radius: 50px;
+            padding: 25px;
+            box-shadow: 0 0 80px rgba(255, 215, 0, 0.8);
+            text-align: center;
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            animation: glow 2s infinite;
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 60px rgba(255, 215, 0, 0.6); }
+            50% { box-shadow: 0 0 100px rgba(255, 215, 0, 0.9); }
+            100% { box-shadow: 0 0 60px rgba(255, 215, 0, 0.6); }
+        }
+
+        .menu-header {
+            margin-bottom: 15px;
+        }
+
+        .menu-header h1 {
+            color: gold;
+            font-size: 32px;
+            text-shadow: 5px 5px 0 #8b4513;
+            margin-bottom: 5px;
+        }
+
+        .menu-header h2 {
+            color: #ffaa00;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .user-profile {
+            background: linear-gradient(145deg, #2a1a0a, #3a2a1a);
+            border: 3px solid gold;
+            border-radius: 30px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            background: gold;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+
+        .user-details {
+            flex: 1;
+            text-align: left;
+            padding-left: 15px;
+        }
+
+        .user-name {
+            color: gold;
+            font-size: 18px;
+            margin-bottom: 3px;
+        }
+
+        .user-stats {
+            color: #ffaa00;
+            font-size: 12px;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .menu-item {
+            background: linear-gradient(145deg, #2a2a3a, #1a1a2a);
+            border: 4px solid gold;
+            border-radius: 30px;
+            padding: 20px 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-10px) scale(1.05);
+            border-color: orange;
+            box-shadow: 0 15px 0 #654321;
+        }
+
+        .menu-icon {
+            font-size: 50px;
+            margin-bottom: 10px;
+        }
+
+        .menu-text {
+            color: gold;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .menu-desc {
+            color: #ccc;
+            font-size: 8px;
+            line-height: 1.4;
+        }
+
+        .menu-footer {
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .coin-display {
+            background: #2a1a0a;
+            border: 2px solid gold;
+            border-radius: 50px;
+            padding: 8px 20px;
+            color: gold;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .coin-display span {
+            color: #ffaa00;
+        }
+
+        .logout-menu-btn {
+            background: #6a2a2a;
+            color: gold;
+            border: 2px solid gold;
+            border-radius: 30px;
+            padding: 8px 20px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .logout-menu-btn:hover {
+            background: #8a3a3a;
+        }
+
+        /* ==================== MÀN HÌNH GAME ==================== */
+        .game-wrapper {
+            max-width: 1600px;
+            width: 100%;
+            height: 850px;
+            background: rgba(10, 10, 20, 0.95);
+            border-radius: 40px;
+            padding: 15px;
+            box-shadow: 0 0 60px rgba(255, 215, 0, 0.6);
+            border: 6px solid gold;
+            display: none;
+            position: relative;
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 0 5px;
+            height: 40px;
+        }
+
+        .user-info {
+            color: gold;
+            font-size: 12px;
+        }
+
+        .back-to-menu {
+            background: #4a2a1a;
+            color: gold;
+            border: 2px solid gold;
+            border-radius: 10px;
+            padding: 8px 15px;
+            font-size: 11px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .logout-btn {
+            background: #6a2a2a;
+            color: gold;
+            border: 2px solid gold;
+            border-radius: 10px;
+            padding: 8px 15px;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        .game-container {
+            display: grid;
+            grid-template-columns: 230px 1fr 320px;
+            grid-template-rows: auto 280px auto auto;
+            gap: 10px;
+            height: calc(100% - 50px);
+        }
+
+        /* LEFT PANEL */
+        .left-panel {
+            grid-column: 1;
+            grid-row: 1 / span 4;
+            background: rgba(20, 20, 40, 0.98);
+            border: 4px solid gold;
+            border-radius: 25px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .deck-container {
+            background: linear-gradient(145deg, #2a1a0a, #3a2a1a);
+            border: 4px solid #b8860b;
+            border-radius: 20px;
+            padding: 12px;
+            text-align: center;
+            box-shadow: 0 8px 0 #654321;
+        }
+
+        .deck-title {
+            color: gold;
+            font-size: 15px;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 0 #8b4513;
+        }
+
+        .deck-pattern {
+            width: 100%;
+            height: 100px;
+            background-image: repeating-linear-gradient(45deg, rgba(255,215,0,0.2) 0px, rgba(255,215,0,0.2) 8px, transparent 8px, transparent 16px),
+                              repeating-linear-gradient(135deg, #8b4513 0px, #8b4513 2px, #654321 2px, #654321 4px);
+            border: 3px solid gold;
+            border-radius: 15px;
+            margin-bottom: 8px;
+        }
+
+        .deck-count {
+            color: gold;
+            font-size: 16px;
+            background: #2a1a0a;
+            padding: 6px;
+            border-radius: 12px;
+            border: 2px solid #b8860b;
+        }
+
+        .tutorial-box {
+            background: #1a1a2a;
+            border: 3px solid gold;
+            border-radius: 18px;
+            padding: 12px;
+            color: white;
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        .tutorial-box h4 {
+            color: gold;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .tutorial-box p {
+            font-size: 10px;
+            line-height: 1.5;
+        }
+
+        .view-all-btn {
+            background: #4a2a1a;
+            color: gold;
+            border: 3px solid gold;
+            padding: 10px;
+            font-size: 11px;
+            cursor: pointer;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .view-all-btn:hover {
+            background: #6a4a2a;
+        }
+
+        /* TOP BAR */
+        .top-bar {
+            grid-column: 2;
+            grid-row: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 20px;
+            background: linear-gradient(145deg, #1a1a2a, #2a2a3a);
+            border: 4px solid gold;
+            border-radius: 50px;
+            box-shadow: 0 6px 0 #8b4513;
+        }
+
+        .hp-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 200px;
+        }
+
+        .hp-label {
+            color: gold;
+            font-size: 14px;
+            margin-bottom: 3px;
+        }
+
+        .hp-bar-container {
+            width: 100%;
+            height: 22px;
+            background: #2a1a0a;
+            border: 3px solid #b8860b;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .hp-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff4444, #ff8888);
+            transition: width 0.3s ease;
+        }
+
+        .hp-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 12px;
+            text-shadow: 2px 2px 2px black;
+        }
+
+        .vs-text {
+            color: gold;
+            font-size: 20px;
+        }
+
+        /* ARENA */
+        .arena {
+            grid-column: 2;
+            grid-row: 2;
+            background: linear-gradient(180deg, #2a4a6a 0%, #3a6a3a 100%);
+            border: 4px solid gold;
+            border-radius: 30px;
+            position: relative;
+            overflow: hidden;
+            height: 280px;
+        }
+
+        .stickman-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .stickman {
+            position: absolute;
+            bottom: 20px;
+            width: 200px;
+            height: 200px;
+            transition: all 0.2s;
+        }
+
+        .stickman.player {
+            left: 50px;
+        }
+
+        .stickman.ai {
+            right: 50px;
+            transform: scaleX(-1);
+        }
+
+        .stickman.ai.attacking {
+            transform: scaleX(-1) scale(1.2);
+        }
+
+        .stickman img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 10px 5px rgba(0,0,0,0.5));
+        }
+
+        .stickman.attacking {
+            transform: scale(1.2);
+            filter: brightness(1.3);
+        }
+
+        .stickman.hit {
+            transform: scale(0.9);
+            filter: brightness(0.7);
+        }
+        .event-text{
+position:absolute;
+left:50%;
+top:20%;
+transform:translateX(-50%);
+font-size:26px;
+color:gold;
+background:rgba(0,0,0,0.8);
+padding:10px 20px;
+border-radius:30px;
+border:3px solid gold;
+animation:eventPop 1s ease;
+z-index:400;
+pointer-events:none;
+}
+
+@keyframes eventPop{
+0%{transform:translate(-50%,-50px) scale(0.3);opacity:0;}
+50%{transform:translate(-50%,0) scale(1.2);opacity:1;}
+100%{transform:translate(-50%,10px) scale(1);opacity:0;}
+}
+
+.critical-text{
+position:absolute;
+left:50%;
+top:30%;
+transform:translate(-50%,-50%);
+font-size:40px;
+color:red;
+font-weight:bold;
+text-shadow:0 0 20px red;
+animation:criticalFlash 0.8s ease;
+z-index:450;
+}
+
+@keyframes criticalFlash{
+0%{transform:translate(-50%,-50%) scale(0.2);opacity:0;}
+50%{transform:translate(-50%,-50%) scale(1.5);opacity:1;}
+100%{transform:translate(-50%,-50%) scale(1);opacity:0;}
+}
+.damage-number{
+position:absolute;
+font-size:28px;
+font-weight:bold;
+color:#ff4444;
+text-shadow:0 0 10px black;
+pointer-events:none;
+animation:damageFloat 0.9s ease-out;
+z-index:350;
+}
+
+@keyframes damageFloat{
+0%{
+transform:translateY(0) scale(0.5);
+opacity:0;
+}
+30%{
+transform:translateY(-20px) scale(1.2);
+opacity:1;
+}
+100%{
+transform:translateY(-70px) scale(1);
+opacity:0;
+}
+}
+        .projectile {
+            position: absolute;
+            font-size: 40px;
+            z-index: 100;
+            filter: drop-shadow(0 0 20px gold);
+            pointer-events: none;
+        }
+
+        @keyframes flyToRight {
+            0% { left: 150px; top: 140px; transform: scale(1); }
+            100% { left: 650px; top: 140px; transform: scale(1.5); }
+        }
+
+        @keyframes flyToLeft {
+            0% { right: 150px; top: 140px; transform: scale(1); }
+            100% { right: 650px; top: 140px; transform: scale(1.5); }
+        }
+
+        .battle-text {
+            position: absolute;
+            top: 15%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 18px;
+            color: gold;
+            background: rgba(0,0,0,0.9);
+            padding: 10px 20px;
+            border-radius: 40px;
+            border: 3px solid gold;
+            white-space: nowrap;
+            z-index: 200;
+        }
+
+        /* BATTLE CARDS */
+        .battle-cards {
+            grid-column: 2;
+            grid-row: 3;
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            padding: 8px;
+            background: linear-gradient(145deg, #1a1a2a, #2a2a3a);
+            border: 4px solid gold;
+            border-radius: 30px;
+            margin-top: 5px;
+        }
+
+        .zoom{
+animation:cameraZoom 0.7s ease;
+}
+
+@keyframes cameraZoom{
+0%{transform:scale(1);}
+50%{transform:scale(1.2);}
+100%{transform:scale(1);}
+}
+        .battle-card {
+            width: 100px;
+            height: 140px;
+            background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+            border: 4px solid gold;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 12px;
+            box-shadow: 0 6px 0 #654321;
+        }
+
+        .battle-card.face-down {
+            background: linear-gradient(145deg, #8b4513, #654321);
+            background-image: repeating-linear-gradient(45deg, rgba(255,215,0,0.2) 0px, rgba(255,215,0,0.2) 6px, transparent 6px, transparent 12px);
+        }
+
+        .battle-card.face-down::before {
+            content: '?';
+            font-size: 40px;
+            color: gold;
+        }
+
+        .battle-card .card-icon {
+            font-size: 35px;
+        }
+
+        .battle-card .card-name {
+            font-size: 10px;
+            color: gold;
+        }
+
+        /* HAND */
+        .hand-area {
+            grid-column: 2;
+            grid-row: 4;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px;
+            background: linear-gradient(145deg, #1a1a2a, #2a2a3a);
+            border: 4px solid gold;
+            border-radius: 40px;
+            margin-top: 5px;
+            min-height: 160px;
+        }
+
+        .card {
+            min-width: 100px;
+            width: 100px;
+            height: 160px;
+            background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+            border: 4px solid gold;
+            border-radius: 18px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px 3px;
+            color: white;
+            font-size: 9px;
+            text-align: center;
+            box-shadow: 0 6px 0 #654321;
+        }
+
+        .card:hover {
+            transform: translateY(-15px);
+        }
+
+        .card.selected {
+            transform: translateY(-20px);
+            border-color: #ff5500;
+        }
+
+        .card.attack {
+            border-left: 6px solid #ff4444;
+        }
+
+        .card.defense {
+            border-left: 6px solid #4444ff;
+        }
+
+        .card-icon {
+            font-size: 30px;
+            margin-bottom: 3px;
+        }
+
+        .card-name {
+            font-size: 9px;
+            color: gold;
+            font-weight: bold;
+        }
+
+        .card-desc {
+            font-size: 7px;
+            color: #ccc;
+            margin: 3px 0;
+        }
+
+        .card-value {
+            font-size: 12px;
+            font-weight: bold;
+            margin-top: 3px;
+        }
+
+        /* RIGHT PANEL */
+        .right-panel{
+grid-column:3;
+grid-row:1 / span 4;
+
+background:linear-gradient(145deg,#1a1a2a,#2a2a3a);
+border:4px solid gold;
+border-radius:25px;
+
+padding:15px;
+
+display:flex;
+flex-direction:column;
+
+height:100%;       /* khóa chiều cao panel */
+overflow:hidden;   /* không cho nở thêm */
+}
+
+        .right-panel h3 {
+            color: gold;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .ai-log{
+
+flex:1;                 /* chiếm phần còn lại */
+
+background:#0a0a1a;
+border:2px solid #00ff00;
+border-radius:18px;
+line-height: 25px;
+padding:10px;
+color:#00ff00;
+font-size:12px;
+
+overflow-y:auto;        /* bật scroll */
+overflow-x:hidden;
+
+min-height:0;           /* QUAN TRỌNG cho flexbox */
+
+scroll-behavior:smooth;
+}
+
+        .ai-stats {
+            background: #2a1a0a;
+            border: 3px solid gold;
+            border-radius: 15px;
+            padding: 10px;
+            color: gold;
+            font-size: 10px;
+        }
+
+        .save-load, .difficulty-selector {
+            display: flex;
+            gap: 5px;
+        }
+
+        .save-btn, .difficulty-btn {
+            flex: 1;
+            background: #4a2a1a;
+            color: gold;
+            border: 2px solid gold;
+            padding: 8px;
+            font-size: 9px;
+            cursor: pointer;
+            border-radius: 12px;
+        }
+
+        .difficulty-btn.active {
+            background: gold;
+            color: black;
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.97);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: linear-gradient(145deg, #1a1a2a, #2a2a3a);
+            border: 6px solid gold;
+            border-radius: 40px;
+            padding: 25px;
+            max-width: 1000px;
+            width: 95%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .modal-header h2 {
+            color: gold;
+            font-size: 20px;
+        }
+
+        .close-btn {
+            color: gold;
+            font-size: 26px;
+            cursor: pointer;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .skill-modal-item {
+            background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+            border: 3px solid gold;
+            border-radius: 20px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .skill-modal-icon {
+            font-size: 30px;
+            min-width: 45px;
+        }
+.slowmo{
+animation:slowMotion 0.6s;
+}
+
+@keyframes slowMotion{
+0%{transform:scale(1);}
+50%{transform:scale(1.05);}
+100%{transform:scale(1);}
+}
+        .skill-modal-name {
+            color: gold;
+            font-size: 12px;
+        }
+
+        .skill-modal-desc {
+            color: #ccc;
+            font-size: 8px;
+        }
+
+        .new-game-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: gold;
+            color: black;
+            border: none;
+            padding: 12px 20px;
+            font-size: 12px;
+            border-radius: 40px;
+            cursor: pointer;
+            border: 3px solid white;
+            z-index: 1000;
+            box-shadow: 0 6px 0 #8b4513;
+            display: none;
+        }
+
+        .new-game-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 9px 0 #8b4513;
+        }
+        .combo-effect{
+position:absolute;
+font-size:90px;
+left:50%;
+top:40%;
+transform:translate(-50%,-50%);
+animation:comboBlast 0.6s ease-out;
+pointer-events:none;
+z-index:300;
+filter:drop-shadow(0 0 20px gold);
+}
+
+@keyframes comboBlast{
+
+0%{
+transform:translate(-50%,-50%) scale(0.2) rotate(0deg);
+opacity:0;
+}
+
+30%{
+transform:translate(-50%,-50%) scale(2) rotate(30deg);
+opacity:1;
+}
+
+60%{
+transform:translate(-50%,-50%) scale(1.4) rotate(-20deg);
+}
+
+100%{
+transform:translate(-50%,-50%) scale(1);
+opacity:0;
+}
+
+}
+
+@keyframes comboFlash{
+    0%{transform:translate(-50%,-50%) scale(0.3);opacity:0;}
+    50%{transform:translate(-50%,-50%) scale(1.5);opacity:1;}
+    100%{transform:translate(-50%,-50%) scale(1);opacity:0;}
+}
+@keyframes screenShake{
+0%{transform:translate(0,0);}
+20%{transform:translate(-10px,5px);}
+40%{transform:translate(10px,-5px);}
+60%{transform:translate(-8px,3px);}
+80%{transform:translate(8px,-3px);}
+100%{transform:translate(0,0);}
+}
+
+.shake{
+animation:screenShake 0.4s;
+}
+.combo-item {
+    background: linear-gradient(145deg, #2a1a2a, #3a1a3a);
+    border: 2px solid gold;
+    border-radius: 15px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.combo-icons {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 24px;
+    min-width: 80px;
+}
+
+.combo-arrow {
+    color: gold;
+    font-size: 16px;
+}
+
+.combo-info {
+    flex: 1;
+}
+
+.combo-name {
+    color: #ffaa00;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.combo-desc {
+    color: #ccc;
+    font-size: 9px;
+    margin-top: 3px;
+}
+
+.combo-damage {
+    background: #ff4444;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 15px;
+    font-size: 11px;
+    font-weight: bold;
+}
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; color: #ffaa00; }
+    100% { opacity: 1; }
+}
+    </style>
+</head>
+<body>
+    <!-- MÀN HÌNH LOGIN -->
+    <div class="login-container" id="loginScreen">
+        <h1>⚔️ STICKMAN<br>WARRIORS ⚔️</h1>
+        
+        <div>
+            <div class="input-group">
+                <label>👤 TÀI KHOẢN</label>
+                <input type="text" id="username" placeholder="Nhập tên">
+            </div>
+            
+            <div class="input-group">
+                <label>🔒 MẬT KHẨU</label>
+                <input type="password" id="password" placeholder="Nhập mật khẩu">
+            </div>
+            
+            <div class="btn-group">
+                <button class="btn" onclick="handleLogin()">ĐĂNG NHẬP</button>
+                <button class="btn" onclick="handleRegister()">ĐĂNG KÝ</button>
+            </div>
+            
+            <div class="message" id="loginMessage"></div>
+        </div>
+
+        <!-- Theme Selector -->
+        <div class="theme-selector">
+            <div class="theme-title">🎨 CHỌN THEME</div>
+            <div class="theme-buttons">
+                <div class="theme-btn blue" onclick="setTheme('blue')">XANH</div>
+                <div class="theme-btn red" onclick="setTheme('red')">ĐỎ</div>
+                <div class="theme-btn green" onclick="setTheme('green')">LÁ</div>
+                <div class="theme-btn purple" onclick="setTheme('purple')">TÍM</div>
+                <div class="theme-btn orange" onclick="setTheme('orange')">CAM</div>
+                <div class="theme-btn dark" onclick="setTheme('dark')">TỐI</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MÀN HÌNH MENU -->
+    <div class="menu-container" id="menuScreen">
+        <div>
+            <div class="menu-header">
+                <h1>STICKMAN</h1>
+                <h2>WARRIORS </h2>
+            </div>
+
+            <div class="user-profile" id="userProfile">
+                <div class="user-avatar">⚔️</div>
+                <div class="user-details">
+                    <div class="user-name" id="menuUsername">Player</div>
+                    <!-- <div class="user-stats">Level 10 • 1200 EXP</div> -->
+                </div>
+            </div>
+
+            <div class="menu-grid">
+                <div class="menu-item" onclick="startGame('pve')">
+                    <div class="menu-icon">🤖</div>
+                    <div class="menu-text">PLAY WITH AI</div>
+                    <div class="menu-desc">Đấu với AI</div>
+                </div>
+
+                <div class="menu-item" onclick="startGame('pvp')">
+                    <div class="menu-icon">👥</div>
+                    <div class="menu-text">PVP ONLINE</div>
+                    <div class="menu-desc">Đấu với người</div>
+                </div>
+
+                <!-- <div class="menu-item" onclick="openShop()">
+                    <div class="menu-icon">🏪</div>
+                    <div class="menu-text">CỬA HÀNG</div>
+                    <div class="menu-desc">Mua thẻ bài</div>
+                </div>
+
+                <div class="menu-item" onclick="openCollection()">
+                    <div class="menu-icon">📚</div>
+                    <div class="menu-text">BỘ SƯU TẬP</div>
+                    <div class="menu-desc">Xem thẻ bài</div>
+                </div> -->
+            </div>
+        </div>
+
+        <div class="menu-footer">
+            <!-- <div class="coin-display">
+                <span>🪙</span> 10,500
+            </div> -->
+            <button class="logout-menu-btn" onclick="logout()">ĐĂNG XUẤT</button>
+        </div>
+    </div>
+
+    <!-- MÀN HÌNH GAME -->
+    <div class="game-wrapper" id="gameScreen">
+        <div class="game-header">
+            <div>
+                <button class="back-to-menu" onclick="backToMenu()">◀ MENU</button>
+                <span class="user-info" id="welcomeUser"></span>
+            </div>
+            <button class="logout-btn" onclick="logout()">ĐĂNG XUẤT</button>
+        </div>
+
+        <!-- MODAL -->
+        <div class="modal" id="skillsModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>📚 TẤT CẢ KỸ NĂNG</h2>
+                    <span class="close-btn" onclick="closeModal()">✖</span>
+                </div>
+                <div class="skills-grid" id="skillsGrid"></div>
+            </div>
+        </div>
+
+        <div class="game-container">
+            <!-- LEFT PANEL -->
+            <div class="left-panel">
+                <div class="deck-container">
+                    <div class="deck-title">⚔️ CỘC BÀI</div>
+                    <div class="deck-pattern"></div>
+                    <div class="deck-count" id="deckCount">25/30</div>
+                </div>
+
+               <div class="tutorial-box" style="font-family: 'Courier New', monospace;">
+    <h4 style="font-family: 'Press Start 2P', cursive;">📖 HƯỚNG DẪN</h4>
+    <p style="font-family: 'Arial', sans-serif; font-size: 11px;">👉 1. Chọn 1 trong 5 lá</p>
+    <p style="font-family: 'Arial', sans-serif; font-size: 11px;">👉 2. AI chọn lá</p>
+    <p style="font-family: 'Arial', sans-serif; font-size: 11px;">👉 3. So sánh kết quả</p>
+    <p style="font-family: 'Arial', sans-serif; font-size: 11px;">👉 4. Rút lá mới</p>
+    <p style="color: gold; margin-top: 10px; font-size: 12px; border-top: 1px solid gold; padding-top: 8px; animation: blink 2s infinite;">
+    ⚡ CHÚ Ý: Nhớ để ý combo để gây thêm nhiều sát thương cho đối phương nhé!
+</p>
+</div>
+
+                <div class="view-all-btn" onclick="openModal()">
+                    📚 XEM TẤT CẢ KĨ NĂNG
+                </div>
+                <!-- Sau nút XEM TẤT CẢ KỸ NĂNG -->
+<div class="view-all-btn" onclick="openComboModal()" style="background: #4a2a4a; margin-top: 5px;">
+    🔥 XEM TẤT CẢ COMBO 🔥
+</div>
+            </div>
+
+            <!-- TOP BAR -->
+            <div class="top-bar">
+                <div class="hp-container">
+                    <div class="hp-label">👤 PLAYER</div>
+                    <div class="hp-bar-container">
+                        <div id="playerHpFill" class="hp-fill" style="width:100%"></div>
+                        <span id="playerHpText" class="hp-text">100/100</span>
+                    </div>
+                </div>
+                <div class="vs-text">VS</div>
+                <div class="hp-container">
+                    <div class="hp-label">🤖  AI</div>
+                    <div class="hp-bar-container">
+                        <div id="aiHpFill" class="hp-fill" style="width:100%"></div>
+                        <span id="aiHpText" class="hp-text">100/100</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ARENA -->
+            <div class="arena">
+                <div class="stickman-container">
+                    <div class="stickman player" id="playerStickman">
+                        <img src="assets/player.png" alt="Player" >
+                    </div>
+                    <div class="stickman ai" id="aiStickman">
+                        <img src="assets/ai.png" alt="AI" >
+                    </div>
+                    <div id="projectile" class="projectile" style="display:none">⚔️</div>
+                    <div id="battleResult" class="battle-text" style="display:none"></div>
+                </div>
+            </div>
+
+            <!-- BATTLE CARDS -->
+            <div class="battle-cards">
+                <div id="playerBattleCard" class="battle-card face-down"></div>
+                <div id="aiBattleCard" class="battle-card face-down"></div>
+            </div>
+
+            <!-- PLAYER HAND -->
+            <div class="hand-area" id="playerHand"></div>
+
+            <!-- RIGHT PANEL -->
+            <div class="right-panel">
+                <h3>🤖 Log AI</h3>
+                <div class="ai-log" id="aiLog">
+                    <div>🧠 AI ready</div>
+                </div>
+                <div class="ai-stats" id="aiStats"></div>
+                <!-- <div class="save-load">
+                    <button class="save-btn" onclick="saveAI()">💾 SAVE</button>
+                    <button class="save-btn" onclick="loadAI()">📂 LOAD</button>
+                </div> -->
+                <div class="difficulty-selector">
+                    <button class="difficulty-btn" onclick="setDifficulty('medium')">🇲🇪 DỄ</button>
+                    <button class="difficulty-btn active" onclick="setDifficulty('hard')">🇭🇰 KHÓ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="new-game-btn" onclick="resetGame()" id="newGameBtn">🔄 NEW GAME</button>
+
+    <script>
+        // Giữ nguyên phần JavaScript của bạn
+        const THEME_KEY = "stickman_theme";
+        let currentUser = null;
+
+        // ==================== XỬ LÝ ĐĂNG NHẬP ====================
+        async function handleLogin(){
+
+const username = document.getElementById("username").value;
+const password = document.getElementById("password").value;
+
+const res = await fetch("/login",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({username,password})
+});
+
+const data = await res.text();
+
+if(data==="ok"){
+currentUser = username;
+
+document.getElementById("loginScreen").style.display="none";
+document.getElementById("menuScreen").style.display="block";
+}
+else{
+alert("Sai tài khoản hoặc mật khẩu");
+}
+
+}
+
+        async function handleRegister(){
+
+const username = document.getElementById("username").value;
+const password = document.getElementById("password").value;
+
+const res = await fetch("/register",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({username,password})
+});
+
+const data = await res.text();
+
+if(data==="ok"){
+alert("Đăng ký thành công");
+}
+else if(data==="exist"){
+alert("Username đã tồn tại");
+}
+else{
+alert("Thiếu thông tin");
+}
+
+}
+
+        // ==================== XỬ LÝ MENU ====================
+        function startGame(mode) {
+            document.getElementById("menuScreen").style.display = "none";
+            document.getElementById("gameScreen").style.display = "block";
+            
+            if(mode === 'pve') {
+                initGame();
+            } else if(mode === 'pvp') {
+                alert("Tính năng PvP đang phát triển!");
+                backToMenu();
+            }
+        }
+
+        function openShop() {
+            alert("Cửa hàng đang mở cửa! 🏪");
+        }
+
+        function openCollection() {
+            openModal();
+        }
+
+        function openRanking() {
+            alert("Bảng xếp hạng:\n1. ProPlayer - 2500🏆\n2. WarriorKing - 2350🏆\n3. StickMaster - 2200🏆");
+        }
+
+        function openSettings() {
+            alert("Cài đặt:\n• Âm lượng: 70%\n• Độ khó: Hard");
+        }
+
+        function backToMenu() {
+            document.getElementById("gameScreen").style.display = "none";
+            document.getElementById("menuScreen").style.display = "block";
+            resetGame();
+        }
+
+        function logout() {
+            document.getElementById("gameScreen").style.display = "none";
+            document.getElementById("menuScreen").style.display = "none";
+            document.getElementById("loginScreen").style.display = "block";
+            document.getElementById("username").value = "";
+            document.getElementById("password").value = "";
+            currentUser = null;
+            resetGame();
+        }
+
+        // ==================== THEME ====================
+        function setTheme(theme) {
+            document.body.className = 'theme-' + theme;
+            localStorage.setItem(THEME_KEY, theme);
+        }
+
+        function loadTheme() {
+            const theme = localStorage.getItem(THEME_KEY) || 'dark';
+            document.body.className = 'theme-' + theme;
+        }
+
+        // ==================== GAME CODE ====================
+        const cards = [
+            
+{ name:'STRIKE',type:'attack',damage:16,block:0,icon:'⚔️',desc:'Đòn đánh cơ bản'},
+{ name:'HEAVY',type:'attack',damage:23,block:0,icon:'🔨',desc:'Đập mạnh'},
+{ name:'FIRE',type:'attack',damage:20,block:0,icon:'🔥',desc:'Cầu lửa'},
+{ name:'ICE',type:'attack',damage:19,block:0,icon:'❄️',desc:'Giáo băng'},
+{ name:'THUNDER',type:'attack',damage:24,block:0,icon:'⚡',desc:'Sét đánh'},
+{ name:'EARTH',type:'attack',damage:21,block:0,icon:'🌍',desc:'Đập đất'},
+{ name:'WIND',type:'attack',damage:15,block:0,icon:'🌪️',desc:'Chém gió'},
+{ name:'SHADOW',type:'attack',damage:22,block:0,icon:'👻',desc:'Bóng tối'},
+{ name:'HOLY',type:'attack',damage:18,block:0,icon:'✨',desc:'Thánh quang'},
+{ name:'DRAGON',type:'attack',damage:27,block:0,icon:'🐉',desc:'Long kích'},
+{ name:'COMET',type:'attack',damage:21,block:0,icon:'☄️',desc:'Sao chổi'},
+{ name:'PHANTOM',type:'attack',damage:23,block:0,icon:'👤',desc:'Ma quái'},
+{ name:'LIGHT',type:'attack',damage:14,block:0,icon:'⭐',desc:'Ánh sáng'},
+{ name:'DARK',type:'attack',damage:25,block:0,icon:'🌑',desc:'Bóng tối'},
+{ name:'CHAOS',type:'attack',damage:30,block:0,icon:'🌀',desc:'Hỗn mang'},
+
+{ name:'GUARD',type:'defense',damage:0,block:12,icon:'🛡️',desc:'Phòng thủ'},
+{ name:'SHIELD',type:'defense',damage:0,block:16,icon:'🔰',desc:'Tường khiên'},
+{ name:'PERFECT',type:'defense',damage:0,block:24,icon:'💎',desc:'Chặn hoàn hảo'},
+{ name:'IRON',type:'defense',damage:0,block:15,icon:'⚙️',desc:'Da sắt'},
+{ name:'STONE',type:'defense',damage:0,block:20,icon:'🪨',desc:'Hóa đá'},
+{ name:'WATER',type:'defense',damage:0,block:14,icon:'💧',desc:'Khiên nước'},
+{ name:'WINDWALL',type:'defense',damage:0,block:13,icon:'🌀',desc:'Tường gió'},
+{ name:'MAGIC',type:'defense',damage:0,block:18,icon:'🔮',desc:'Khiên phép'},
+{ name:'DODGE',type:'defense',damage:0,block:22,icon:'💨',desc:'Né tránh'},
+{ name:'REFLECT',type:'defense',damage:0,block:10,icon:'🪞',desc:'Phản đòn'},
+{ name:'AEGIS',type:'defense',damage:0,block:21,icon:'🏛️',desc:'Thần khiên'},
+{ name:'BARRIER',type:'defense',damage:0,block:15,icon:'🧱',desc:'Rào chắn'},
+{ name:'FORTIFY',type:'defense',damage:0,block:17,icon:'🏰',desc:'Củng cố'},
+{ name:'SPIRIT',type:'defense',damage:0,block:14,icon:'👼',desc:'Linh hồn'},
+{ name:'VOID',type:'defense',damage:0,block:26,icon:'⚫',desc:'Hư không'}
+        ];
+
+        // AI CLASS
+    // AI CLASS
+class SuperAI {
+    constructor(difficulty = 'hard') {
+        this.difficulty = difficulty;
+        this.log = [];
+        this.qTable = {};
+        this.gamesPlayed = 0;
+        this.wins = 0;
+        this.simulations = difficulty === 'medium' ? 20 : 40;
+        this.playerStats = {
+            attack: 0,
+            defense: 0
+        };
+    }
+minimaxFilter(hand){
+
+let good=[];
+
+for(let card of hand){
+
+let worst = Infinity;
+
+for(let enemy of cards){
+
+let score = 0;
+
+if(card.type==="attack" && enemy.type==="attack")
+score = card.damage - enemy.damage;
+
+if(card.type==="attack" && enemy.type==="defense")
+score = card.damage - enemy.block;
+
+if(card.type==="defense" && enemy.type==="attack")
+score = card.block;
+
+worst = Math.min(worst,score);
+
+}
+
+if(worst>-20) good.push(card);
+
+}
+
+return good.length?good:hand;
+
+}
+expectiminimax(card){
+
+let expected = 0;
+
+for(let enemy of cards){
+
+let prob = 1/cards.length;
+
+let score = 0;
+
+if(card.type==="attack" && enemy.type==="attack")
+score = card.damage - enemy.damage;
+
+if(card.type==="attack" && enemy.type==="defense")
+score = card.damage - enemy.block;
+
+if(card.type==="defense" && enemy.type==="attack")
+score = card.block;
+
+// THÊM COMBO
+let combo = checkCombo(card, lastAICard);
+score += combo;
+
+expected += prob*score;
+
+}
+
+return expected;
+}
+    predictPlayerType() {
+        const total = this.playerStats.attack + this.playerStats.defense;
+        if (total < 5) {
+            return Math.random() < 0.5 ? "attack" : "defense";
+        }
+        const attackProb = this.playerStats.attack / total;
+        return Math.random() < attackProb ? "attack" : "defense";
+    }
+
+    predictOpponent() {
+        if (Math.random() < 0.6) {
+            return cards[Math.floor(Math.random() * cards.length)];
+        }
+        return cards[Math.floor(Math.random() * cards.length)];
+    }
+
+    filterBadCards(hand, playerHP, aiHP) {
+        let goodCards = [];
+        for (let card of hand) {
+            let worstScore = Infinity;
+            for (let enemy of cards) {
+                let score = 0;
+                if (card.type === "attack" && enemy.type === "attack") {
+                    score = card.damage - enemy.damage;
+                }
+                if (card.type === "attack" && enemy.type === "defense") {
+                    score = card.damage - enemy.block;
+                }
+                if (card.type === "defense" && enemy.type === "attack") {
+                    score = card.block;
+                }
+                worstScore = Math.min(worstScore, score);
+            }
+            if (worstScore > -20) {
+                goodCards.push(card);
+            }
+        }
+        return goodCards.length > 0 ? goodCards : hand;
+    }
+
+    chooseBestCard(hand, playerHP, aiHP) {
+    hand = this.minimaxFilter(hand);
+       this.log.push(`--------------------`);
+this.log.push(`🔁 LƯỢT ${turnCounter-1}`);
+this.log.push(`🤔 AI PHÂN TÍCH`);
+        let bestCard = hand[0];
+        let bestScore = -Infinity;
+
+        for (let card of hand) {
+            let score = 0;
+            for (let i = 0; i < this.simulations; i++) {
+                const randomCard = cards[Math.floor(Math.random() * cards.length)];
+                if (card.type === 'attack') {
+                    if (randomCard.type === 'attack') score += card.damage - randomCard.damage;
+                    else score += -randomCard.block;
+                } else {
+                    if (randomCard.type === 'attack') score += card.block;
+                }
+            }
+             const avgScore = score / this.simulations; 
+          const expect = this.expectiminimax(card);
+            const qValue = this.qTable[`${playerHP}_${aiHP}_${card.name}`] || 0;
+            const finalScore =avgScore * 0.5 +expect * 0.3 +qValue * 0.2;
+this.log.push(`${card.icon} ${card.name}`);
+this.log.push(`MonteCarlo: ${Math.round(avgScore)}`);
+this.log.push(`Expectiminimax: ${Math.round(expect)}`);
+this.log.push(`Q-learning: ${Math.round(qValue)}`);
+          //  this.log.push(`${card.icon} ${card.name}: ${Math.round(finalScore)}`);
+
+            if (finalScore > bestScore) {
+                bestScore = finalScore;
+                bestCard = card;
+            }
+        }
+
+        this.log.push(`✅ CHỌN: ${bestCard.icon} ${bestCard.name}`);
+        return bestCard;
+    }
+
+    updateQTable(state, action, reward) {
+
+const key = `${state}_${action}`;
+
+const oldValue = this.qTable[key] || 0;
+
+const newValue = oldValue + 0.1 * (reward - oldValue);
+
+this.qTable[key] = newValue;
+
+// LOG AI ĐANG HỌC
+this.log.push(
+`📚 LEARNED: ${action} (${oldValue.toFixed(2)} → ${newValue.toFixed(2)})`
+);
+
+}
+}
+
+        // Game state
+        let playerHP = 100, aiHP = 100;
+        let playerStatus = {};
+        let aiStatus = {};      
+        
+        let lastPlayerCard = null;
+        let lastAICard = null;
+        let turnCounter = 1;
+        let playerDeck = [], aiDeck = [];
+        let playerHand = [], aiHand = [];
+        let selectedCardIndex = -1;
+        let playerSelectedCard = null, aiSelectedCard = null;
+        let gamePhase = 'select';
+        let ai = new SuperAI('hard');
+
+        // Modal functions
+        function openModal() {
+            document.getElementById('skillsModal').classList.add('active');
+            const grid = document.getElementById('skillsGrid');
+            grid.innerHTML = '';
+            cards.forEach(card => {
+                grid.innerHTML += `<div class="skill-modal-item">
+                    <div class="skill-modal-icon">${card.icon}</div>
+                    <div>
+                        <div class="skill-modal-name">${card.name}</div>
+                        <div class="skill-modal-desc">${card.desc}</div>
+                        <div style="color:${card.type==='attack'?'#ff8888':'#8888ff'};font-size:10px;margin-top:3px">
+                            ${card.type==='attack'?'⚔️ '+card.damage:'🛡️ '+card.block}
+                        </div>
+                    </div>
+                </div>`;
+            });
+        }
+        function evaluateMove(card, playerType){
+
+let score = 0;
+
+for(let enemy of cards){
+
+if(enemy.type !== playerType) continue;
+
+if(card.type==="attack" && enemy.type==="attack"){
+score += card.damage - enemy.damage;
+}
+
+if(card.type==="attack" && enemy.type==="defense"){
+score += card.damage - enemy.block;
+}
+
+if(card.type==="defense" && enemy.type==="attack"){
+score += card.block;
+}
+
+}
+
+return score;
+
+}
+async function handleRegister(){
+
+const username = document.getElementById("username").value;
+const password = document.getElementById("password").value;
+
+const res = await fetch("/register",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({username,password})
+});
+
+const data = await res.json();
+
+alert(data.message);
+
+}
+        function showCritical(){
+
+const arena=document.querySelector(".arena");
+
+const c=document.createElement("div");
+c.className="critical-text";
+c.innerText="CRITICAL!";
+
+arena.appendChild(c);
+
+setTimeout(()=>{
+c.remove();
+},800);
+
+}
+
+        function closeModal() {
+            document.getElementById('skillsModal').classList.remove('active');
+        }
+        let COMBAT_SPEED = 1.4; 
+function checkCombo(current, previous){
+
+    if(!previous) return 0;
+
+    // FIRE → WIND
+    if(previous.name === "FIRE" && current.name === "WIND"){
+        return 10;
+    }
+
+    // ICE → THUNDER
+    if(previous.name === "ICE" && current.name === "THUNDER"){
+        return 12;
+    }
+
+    // SHADOW → PHANTOM
+    if(previous.name === "SHADOW" && current.name === "PHANTOM"){
+        return 15;
+    }
+
+    // EARTH → HEAVY
+    if(previous.name === "EARTH" && current.name === "HEAVY"){
+        return 12;
+    }
+
+    // ===== COMBO MỚI =====
+
+    // FIRE → EARTH = VOLCANO
+    if(previous.name === "FIRE" && current.name === "EARTH"){
+        return 14;
+    }
+
+    // WIND → ICE = BLIZZARD
+    if(previous.name === "WIND" && current.name === "ICE"){
+        return 13;
+    }
+
+    // LIGHT → HOLY = DIVINE
+    if(previous.name === "LIGHT" && current.name === "HOLY"){
+        return 12;
+    }
+
+    // DARK → CHAOS = ABYSS
+    if(previous.name === "DARK" && current.name === "CHAOS"){
+        return 16;
+    }
+
+    // THUNDER → DRAGON = DRAGON STORM
+    if(previous.name === "THUNDER" && current.name === "DRAGON"){
+        return 18;
+    }
+
+    // COMET → CHAOS = METEOR CHAOS
+    if(previous.name === "COMET" && current.name === "CHAOS"){
+        return 17;
+    }
+
+    return 0;
+}
+function showComboEffect(icon){
+
+const arena = document.querySelector(".arena");
+
+const effect = document.createElement("div");
+effect.className = "combo-effect";
+effect.innerText = icon;
+
+arena.appendChild(effect);
+
+// rung màn hình
+document.querySelector(".game-wrapper").classList.add("shake");
+
+setTimeout(()=>{
+document.querySelector(".game-wrapper").classList.remove("shake");
+effect.remove();
+},1000*COMBAT_SPEED);
+
+}
+function showEvent(text){
+
+const arena = document.querySelector(".arena");
+
+const msg = document.createElement("div");
+msg.className="event-text";
+msg.innerText=text;
+
+arena.appendChild(msg);
+
+setTimeout(()=>{
+msg.remove();
+},1300*COMBAT_SPEED);
+
+}
+function showDamage(target, value){
+
+const arena = document.querySelector(".arena");
+
+const dmg = document.createElement("div");
+dmg.className="damage-number";
+dmg.innerText="-" + value;
+
+if(target==="player"){
+dmg.style.left="110px";
+dmg.style.top="120px";
+}
+
+if(target==="ai"){
+dmg.style.right="110px";
+dmg.style.top="120px";
+}
+
+arena.appendChild(dmg);
+
+setTimeout(()=>{
+dmg.remove();
+},1300*COMBAT_SPEED);
+
+}
+let eventQueue = [];
+let showingEvent = false;
+
+function showEvent(text){
+
+eventQueue.push(text);
+
+if(!showingEvent){
+processEvent();
+}
+
+}
+
+function processEvent(){
+
+if(eventQueue.length===0){
+showingEvent=false;
+return;
+}
+
+showingEvent=true;
+
+const arena=document.querySelector(".arena");
+
+const msg=document.createElement("div");
+msg.className="event-text";
+msg.innerText=eventQueue.shift();
+
+arena.appendChild(msg);
+
+setTimeout(()=>{
+msg.remove();
+processEvent();
+},900);
+
+}
+        // Khởi tạo game
+        function initGame() {
+            turnCounter = 1;
+            autoLoadAI();
+            playerDeck = [...cards].sort(()=>Math.random()-0.5);
+            aiDeck = [...cards].sort(()=>Math.random()-0.5);
+            
+            playerHand = playerDeck.splice(0, 5);
+            aiHand = aiDeck.splice(0, 5);
+            
+            document.getElementById('deckCount').innerText = playerDeck.length + '/30';
+            renderHand();
+            updateUI();
+            updateAIStats();
+            
+            playerHP = 100;
+            aiHP = 100;
+            gamePhase = 'select';
+        }
+
+        function renderHand() {
+            const handArea = document.getElementById('playerHand');
+            handArea.innerHTML = '';
+            playerHand.forEach((card, i) => {
+                handArea.innerHTML += `<div class="card ${card.type} ${i===selectedCardIndex?'selected':''}" onclick="selectCard(${i})">
+                    <div class="card-icon">${card.icon}</div>
+                    <div class="card-name">${card.name}</div>
+                    <div class="card-desc">${card.desc}</div>
+                    <div class="card-value">${card.type==='attack'?'⚔️'+card.damage:'🛡️'+card.block}</div>
+                </div>`;
+            });
+        }
+
+        function selectCard(index) {
+            // STUN mất lượt
+if(playerStatus.stun){
+    playerStatus.stun--;
+    alert("⚡ Bạn bị choáng!");
+    return;
+}
+            if (gamePhase !== 'select') return;
+            
+            selectedCardIndex = index;
+            playerSelectedCard = playerHand[index];
+            renderHand();
+            turnCounter++; 
+            aiSelectedCard = ai.chooseBestCard(aiHand, playerHP, aiHP);
+            updateAILog();
+            
+            gamePhase = 'facedown';
+            document.getElementById('playerBattleCard').className = 'battle-card face-down';
+            document.getElementById('aiBattleCard').className = 'battle-card face-down';
+            
+            setTimeout(() => revealCards(), 1200 *COMBAT_SPEED);
+        }
+
+        function revealCards() {
+            gamePhase = 'reveal';
+            
+            document.getElementById('playerBattleCard').className = `battle-card ${playerSelectedCard.type}`;
+            document.getElementById('playerBattleCard').innerHTML = `<div class="card-icon">${playerSelectedCard.icon}</div><div class="card-name">${playerSelectedCard.name}</div>`;
+            
+            document.getElementById('aiBattleCard').className = `battle-card ${aiSelectedCard.type}`;
+            document.getElementById('aiBattleCard').innerHTML = `<div class="card-icon">${aiSelectedCard.icon}</div><div class="card-name">${aiSelectedCard.name}</div>`;
+            
+            calculateBattle();
+        }
+function calculateBattle() {
+    let playerDamage = 0, aiDamage = 0, resultText = '';
+
+    let playerCombo = checkCombo(playerSelectedCard, lastPlayerCard);
+    let aiCombo = checkCombo(aiSelectedCard, lastAICard);
+
+    // ===== TÍNH DAMAGE THEO ĐÚNG SỐ TRÊN LÁ BÀI =====
+    
+    // TRƯỜNG HỢP 1: Cả 2 tấn công
+    if (playerSelectedCard.type === 'attack' && aiSelectedCard.type === 'attack') {
+        playerDamage = playerSelectedCard.damage;  // Lấy đúng số damage trên lá bài
+        aiDamage = aiSelectedCard.damage;          // Lấy đúng số damage trên lá bài
+        resultText = 'CẢ HAI TẤN CÔNG!';
+    } 
+    
+    // TRƯỜNG HỢP 2: Player tấn công - AI phòng thủ
+    else if (playerSelectedCard.type === 'attack' && aiSelectedCard.type === 'defense') {
+        if (playerSelectedCard.damage > aiSelectedCard.block) {
+            playerDamage = playerSelectedCard.damage - aiSelectedCard.block;  // Damage - block
+            resultText = 'XUYÊN THỦNG!';
+        } else {
+            playerDamage = 0;  // Block hoàn toàn
+            resultText = 'BỊ CHẶN!';
+        }
+    } 
+    
+    // TRƯỜNG HỢP 3: Player phòng thủ - AI tấn công
+    else if (playerSelectedCard.type === 'defense' && aiSelectedCard.type === 'attack') {
+        if (aiSelectedCard.damage > playerSelectedCard.block) {
+            aiDamage = aiSelectedCard.damage - playerSelectedCard.block;  // Damage - block
+            resultText = 'AI TẤN CÔNG!';
+        } else {
+            aiDamage = 0;  // Block hoàn toàn
+            resultText = 'CHẶN THÀNH CÔNG!';
+        }
+    } 
+    
+    // TRƯỜNG HỢP 4: Cả 2 phòng thủ
+    else {
+        resultText = 'CẢ HAI PHÒNG THỦ!';
+    }
+
+    // ===== COMBO (CỘNG THÊM, KHÔNG LÀM GIẢM DAMAGE GỐC) =====
+    if (playerCombo > 0) {
+        playerDamage += playerCombo;  // Cộng thêm combo
+        resultText += " 🔥COMBO +" + playerCombo;
+        showComboEffect(playerSelectedCard.icon);
+        showEvent("🔥 COMBO ATTACK!");
+    }
+
+    if (aiCombo > 0) {
+        aiDamage += aiCombo;  // Cộng thêm combo
+        resultText += " ⚡AI COMBO +" + aiCombo;
+        showComboEffect(aiSelectedCard.icon);
+        showEvent("⚡ AI COMBO!");
+    }
+
+    // ===== STATUS EFFECT (CHỈ GÁN TRẠNG THÁI, KHÔNG ẢNH HƯỞNG DAMAGE HIỆN TẠI) =====
+    if (playerSelectedCard.name === "FIRE") { aiStatus.burn = 3; }
+    if (aiSelectedCard.name === "FIRE") { playerStatus.burn = 3; }
+    
+    if (playerSelectedCard.name === "ICE") { aiStatus.freeze = 1; }
+    if (aiSelectedCard.name === "ICE") { playerStatus.freeze = 1; }
+    
+    if (playerSelectedCard.name === "THUNDER") {
+        if (Math.random() < 0.3) {
+            aiStatus.stun = 1;
+            resultText += " ⚡STUN!";
+        }
+    }
+    if (aiSelectedCard.name === "THUNDER") {
+        if (Math.random() < 0.3) {
+            playerStatus.stun = 1;
+        }
+    }
+
+    // ===== REFLECT (PHẢN DAMAGE RIÊNG, KHÔNG ẢNH HƯỞNG DAMAGE GỐC) =====
+    if (aiSelectedCard.name === "REFLECT" && playerSelectedCard.type === "attack") {
+        let reflectDamage = Math.floor(playerSelectedCard.damage * 0.3);
+        aiDamage += reflectDamage;  // Cộng thêm damage phản
+        resultText += " 🔁PHẢN " + reflectDamage + "!";
+    }
+
+    if (playerSelectedCard.name === "REFLECT" && aiSelectedCard.type === "attack") {
+        let reflectDamage = Math.floor(aiSelectedCard.damage * 0.3);
+        playerDamage += reflectDamage;
+        resultText += " 🔁PHẢN " + reflectDamage + "!";
+    }
+
+    // ===== DODGE (CHỈ ẢNH HƯỞNG KHI CÓ DODGE) =====
+    if (playerSelectedCard.name === "DODGE") {
+        if (Math.random() < 0.5) {
+            aiDamage = 0;  // Né thành công, damage AI = 0
+            resultText += " 💨NÉ!";
+        }
+    }
+
+    if (aiSelectedCard.name === "DODGE") {
+        if (Math.random() < 0.5) {
+            playerDamage = 0;  // AI né, damage Player = 0
+            resultText += " 💨AI NÉ!";
+        }
+    }
+
+    // ===== ANIMATION =====
+    if (playerDamage > 0) {
+        document.getElementById('projectile').style.cssText =
+            'display:block; left:150px; top:140px; animation:flyToRight 0.5s ease';
+        document.getElementById('projectile').innerText = playerSelectedCard.icon;
+        document.getElementById('playerStickman').classList.add('attacking');
+        document.getElementById('aiStickman').classList.add('hit');
+    }
+
+    if (aiDamage > 0) {
+        document.getElementById('projectile').style.cssText =
+            'display:block; right:150px; top:140px; animation:flyToLeft 0.5s ease';
+        document.getElementById('projectile').innerText = aiSelectedCard.icon;
+        document.getElementById('aiStickman').classList.add('attacking');
+        document.getElementById('playerStickman').classList.add('hit');
+    }
+
+    setTimeout(() => {
+        document.getElementById('projectile').style.display = 'none';
+        document.getElementById('playerStickman').classList.remove('attacking', 'hit');
+        document.getElementById('aiStickman').classList.remove('attacking', 'hit');
+    }, 500);
+
+    // ===== HIỆN DAMAGE POPUP =====
+    if (playerDamage > 0) { 
+        showDamage("ai", playerDamage); 
+        console.log("Player gây damage:", playerDamage); // Debug
+    }
+    if (aiDamage > 0) { 
+        showDamage("player", aiDamage); 
+        console.log("AI gây damage:", aiDamage); // Debug
+    }
+
+    // ===== TRỪ HP THEO ĐÚNG DAMAGE =====
+    const oldPlayer = playerHP;
+    const oldAI = aiHP;
+
+    aiHP = Math.max(0, aiHP - playerDamage);
+    playerHP = Math.max(0, playerHP - aiDamage);
+    ai.log.push(`Player dmg: ${playerDamage}`);
+ai.log.push(`AI dmg: ${aiDamage}`);
+ai.log.push(`Player HP: ${playerHP}`);
+ai.log.push(`AI HP: ${aiHP}`);
+if(aiDamage > playerDamage){
+ai.log.push("Kết quả: AI đánh đúng");
+}
+else if(playerDamage > aiDamage){
+ai.log.push("Kết quả: AI đánh sai");
+}
+else{
+ai.log.push("Kết quả: hòa");
+}
+
+    console.log(`Player damage: ${playerDamage}, AI damage: ${aiDamage}`); // Debug
+    console.log(`Player HP: ${oldPlayer} -> ${playerHP}, AI HP: ${oldAI} -> ${aiHP}`); // Debug
+
+    // ===== AI LEARNING =====
+    const state = `${oldPlayer}_${oldAI}_${aiHand.length}`;
+    ai.updateQTable(
+        state,
+        aiSelectedCard.name,
+        (aiHP - playerHP) - (oldAI - oldPlayer)
+        
+    );
+    updateAIStats();
+autoSaveAI();
+
+    // ===== HIỂN THỊ KẾT QUẢ =====
+    document.getElementById('battleResult').style.display = 'block';
+    document.getElementById('battleResult').innerText = resultText;
+
+    updateUI();
+    updateAIStats();
+
+    setTimeout(() => {
+        document.getElementById('battleResult').style.display = 'none';
+        endTurn();
+    }, 2000 * COMBAT_SPEED);
+}
+//         function calculateBattle() {
+
+// let playerDamage = 0, aiDamage = 0, resultText = '';
+
+// let playerCombo = checkCombo(playerSelectedCard,lastPlayerCard);
+// let aiCombo = checkCombo(aiSelectedCard,lastAICard);
+
+
+// // ===== TÍNH DAMAGE =====
+
+// if (playerSelectedCard.type === 'attack' && aiSelectedCard.type === 'attack') {
+
+// playerDamage = playerSelectedCard.damage;
+// if(playerStatus.freeze){ playerDamage *= 0.6; }
+
+// aiDamage = aiSelectedCard.damage;
+// if(aiStatus.freeze){ aiDamage *= 0.6; }
+
+// resultText = 'CẢ HAI TẤN CÔNG!';
+// }
+
+
+// else if (playerSelectedCard.type === 'attack' && aiSelectedCard.type === 'defense') {
+
+// playerDamage = playerSelectedCard.damage;
+
+// if(playerStatus.freeze){ playerDamage *= 0.6; }
+
+// if (playerDamage > aiSelectedCard.block) {
+
+// playerDamage -= aiSelectedCard.block;
+// resultText = 'XUYÊN THỦNG!';
+
+// }else{
+// playerDamage = 0;
+// resultText = 'BỊ CHẶN!';
+// }
+
+// }
+
+
+// else if (playerSelectedCard.type === 'defense' && aiSelectedCard.type === 'attack') {
+
+// aiDamage = aiSelectedCard.damage;
+
+// if(aiStatus.freeze){ aiDamage *= 0.6; }
+
+// if (aiDamage > playerSelectedCard.block) {
+
+// aiDamage -= playerSelectedCard.block;
+// resultText = 'AI TẤN CÔNG!';
+
+// }else{
+
+// aiDamage = 0;
+// resultText = 'CHẶN THÀNH CÔNG!';
+
+// }
+
+// }
+
+// else {
+
+// resultText = 'CẢ HAI PHÒNG THỦ!';
+
+// }
+
+
+
+// // ===== COMBO =====
+
+// if(playerCombo > 0){
+
+// playerDamage += playerCombo;
+
+// resultText += " 🔥COMBO +" + playerCombo;
+
+// showComboEffect(playerSelectedCard.icon);
+
+// showEvent("🔥 COMBO ATTACK!");
+
+// document.querySelector(".arena").style.boxShadow="0 0 80px gold";
+
+// setTimeout(()=>{
+// document.querySelector(".arena").style.boxShadow="";
+// },250);
+
+// }
+
+
+// if(aiCombo > 0){
+
+// aiDamage += aiCombo;
+
+// showComboEffect(aiSelectedCard.icon);
+
+// showEvent("⚡ AI COMBO!");
+
+// document.querySelector(".arena").style.boxShadow="0 0 80px red";
+
+// setTimeout(()=>{
+// document.querySelector(".arena").style.boxShadow="";
+// },250);
+
+// }
+
+
+
+// // ===== STATUS EFFECT =====
+
+// // FIRE burn
+// if(playerSelectedCard.name === "FIRE"){ aiStatus.burn = 3; }
+// if(aiSelectedCard.name === "FIRE"){ playerStatus.burn = 3; }
+
+// // ICE freeze
+// if(playerSelectedCard.name === "ICE"){ aiStatus.freeze = 1; }
+// if(aiSelectedCard.name === "ICE"){ playerStatus.freeze = 1; }
+
+// // THUNDER stun
+// if(playerSelectedCard.name === "THUNDER"){
+// if(Math.random() < 0.3){
+// aiStatus.stun = 1;
+// resultText += " ⚡STUN!";
+// }
+// }
+
+// if(aiSelectedCard.name === "THUNDER"){
+// if(Math.random() < 0.3){
+// playerStatus.stun = 1;
+// }
+// }
+
+
+
+// // ===== REFLECT =====
+
+// if(aiSelectedCard.name === "REFLECT" && playerSelectedCard.type === "attack"){
+
+// aiDamage += Math.floor(playerSelectedCard.damage * 0.3);
+// resultText += " 🔁PHẢN!";
+
+// }
+
+// if(playerSelectedCard.name === "REFLECT" && aiSelectedCard.type === "attack"){
+
+// playerDamage += Math.floor(aiSelectedCard.damage * 0.3);
+// resultText += " 🔁PHẢN!";
+
+// }
+
+
+
+// // ===== DODGE =====
+
+// if(playerSelectedCard.name === "DODGE"){
+
+// if(Math.random() < 0.5){
+
+// aiDamage = 0;
+// resultText += " 💨NÉ!";
+
+// }
+
+// }
+
+// if(aiSelectedCard.name === "DODGE"){
+
+// if(Math.random() < 0.5){
+
+// playerDamage = 0;
+
+// }
+
+// }
+
+
+
+// // ===== CRITICAL CHECK =====
+
+// if(playerDamage > 35){
+
+// showCritical();
+// showEvent("💥 CRITICAL HIT!");
+
+// }
+
+// if(aiDamage > 35){
+
+// showCritical();
+// showEvent("💥 AI CRITICAL!");
+
+// }
+
+
+
+// // ===== SLOW MOTION =====
+
+// if(playerCombo >= 15 || playerDamage > 35){
+
+// document.querySelector(".game-wrapper").classList.add("slowmo");
+
+// setTimeout(()=>{
+// document.querySelector(".game-wrapper").classList.remove("slowmo");
+// },600);
+
+// }
+
+
+
+// // ===== CAMERA ZOOM =====
+
+// if(playerSelectedCard.damage >= 28){
+
+// document.querySelector(".arena").classList.add("zoom");
+
+// setTimeout(()=>{
+// document.querySelector(".arena").classList.remove("zoom");
+// },500);
+
+// }
+
+
+
+// // ===== ANIMATION =====
+
+// if (playerDamage > 0) {
+
+// document.getElementById('projectile').style.cssText =
+// 'display:block; left:150px; top:140px; animation:flyToRight 0.5s ease';
+
+// document.getElementById('projectile').innerText = playerSelectedCard.icon;
+
+// document.getElementById('playerStickman').classList.add('attacking');
+// document.getElementById('aiStickman').classList.add('hit');
+
+// }
+
+// if (aiDamage > 0) {
+
+// document.getElementById('projectile').style.cssText =
+// 'display:block; right:150px; top:140px; animation:flyToLeft 0.5s ease';
+
+// document.getElementById('projectile').innerText = aiSelectedCard.icon;
+
+// document.getElementById('aiStickman').classList.add('attacking');
+// document.getElementById('playerStickman').classList.add('hit');
+
+// }
+
+// setTimeout(()=>{
+
+// document.getElementById('projectile').style.display='none';
+
+// document.getElementById('playerStickman').classList.remove('attacking','hit');
+// document.getElementById('aiStickman').classList.remove('attacking','hit');
+
+// },500);
+
+
+
+// // ===== DAMAGE POPUP =====
+
+// if(playerDamage > 0){ showDamage("ai",playerDamage); }
+
+// if(aiDamage > 0){ showDamage("player",aiDamage); }
+
+
+
+// // ===== TRỪ HP =====
+
+// const oldPlayer = playerHP;
+// const oldAI = aiHP;
+
+// aiHP = Math.max(0, aiHP - playerDamage);
+// playerHP = Math.max(0, playerHP - aiDamage);
+
+
+
+// // ===== AI LEARNING =====
+
+// const state = `${oldPlayer}_${oldAI}_${aiHand.length}`;
+
+// ai.updateQTable(
+// state,
+// aiSelectedCard.name,
+// (aiHP - playerHP) - (oldAI - oldPlayer)
+// );
+
+
+
+// document.getElementById('battleResult').style.display='block';
+// document.getElementById('battleResult').innerText=resultText;
+
+// updateUI();
+// updateAIStats();
+
+
+
+// setTimeout(()=>{
+
+// document.getElementById('battleResult').style.display='none';
+// endTurn();
+
+// },2000 * COMBAT_SPEED);
+
+// }
+
+        function endTurn() {
+            // ===== APPLY STATUS =====
+
+// burn
+if(playerStatus.burn){
+    playerHP -= 3;
+    playerStatus.burn--;
+}
+
+if(aiStatus.burn){
+    aiHP -= 3;
+    aiStatus.burn--;
+}
+
+// freeze giảm damage lượt sau
+if(playerStatus.freeze){
+    playerStatus.freeze--;
+}
+
+if(aiStatus.freeze){
+    aiStatus.freeze--;
+}
+            if (playerHP <= 0 || aiHP <= 0) {
+                ai.gamesPlayed++;
+                if (playerHP <= 0) ai.wins++;
+                updateAIStats();
+                
+                setTimeout(()=>{
+                    const result = playerHP <= 0 ? "💀 BẠN THUA!" : "🏆 BẠN THẮNG!";
+                    const again = confirm(result + "\n\nChơi ván mới?");
+                    if(again){
+                        resetGame();
+                    } else {
+                        backToMenu();
+                    }
+                },300);
+                
+                gamePhase = "gameover";
+                return;
+            }
+            
+            // Trả lá đã đánh về cộc bài
+            playerDeck.push(playerSelectedCard);
+            aiDeck.push(aiSelectedCard);
+            
+            // Xóa lá đã đánh khỏi tay
+            playerHand = playerHand.filter((_,i) => i !== selectedCardIndex);
+            aiHand = aiHand.filter((_,i) => i !== aiHand.indexOf(aiSelectedCard));
+            
+            // Xáo trộn cộc bài
+            playerDeck.sort(() => Math.random() - 0.5);
+            aiDeck.sort(() => Math.random() - 0.5);
+            
+            // Rút lá mới cho đủ 5 lá
+            while (playerHand.length < 5 && playerDeck.length > 0) {
+                playerHand.push(playerDeck.shift());
+            }
+            
+            while (aiHand.length < 5 && aiDeck.length > 0) {
+                aiHand.push(aiDeck.shift());
+            }
+            lastPlayerCard = playerSelectedCard;
+            lastAICard = aiSelectedCard;
+            // Reset trạng thái
+            selectedCardIndex = -1;
+            playerSelectedCard = null;
+            aiSelectedCard = null;
+            gamePhase = 'select';
+            
+            // Cập nhật UI
+            document.getElementById('playerBattleCard').className = 'battle-card face-down';
+            document.getElementById('playerBattleCard').innerHTML = '';
+            document.getElementById('aiBattleCard').className = 'battle-card face-down';
+            document.getElementById('aiBattleCard').innerHTML = '';
+            
+            document.getElementById('deckCount').innerText = playerDeck.length + '/30';
+            renderHand();
+            if(playerSelectedCard.type==="attack"){
+ai.playerStats.attack++;
+}else{
+ai.playerStats.defense++;
+}
+lastPlayerCard = playerSelectedCard;
+lastAICard = aiSelectedCard;
+
+        }
+
+        function updateUI() {
+            document.getElementById('playerHpFill').style.width = playerHP + '%';
+            document.getElementById('aiHpFill').style.width = aiHP + '%';
+            document.getElementById('playerHpText').innerText = Math.round(playerHP)+'/100';
+            document.getElementById('aiHpText').innerText = Math.round(aiHP)+'/100';
+        }
+
+       function updateAILog(){
+
+const logDiv = document.getElementById("aiLog");
+
+logDiv.innerHTML =
+ai.log.map(x=>`<div>${x}</div>`).join("");
+
+logDiv.scrollTop = logDiv.scrollHeight;
+
+}
+
+        function updateAIStats(){
+
+const states = Object.keys(ai.qTable).length;
+
+let winRate = 0;
+if(ai.gamesPlayed>0){
+winRate = Math.round(ai.wins/ai.gamesPlayed*100);
+}
+
+document.getElementById("aiStats").innerHTML = `
+🧠 AI MEMORY: ${states} states<br>
+🎮 GAMES: ${ai.gamesPlayed}<br>
+🏆 WIN RATE: ${winRate}%<br>
+⚙️ SIMULATION: ${ai.simulations}<br>
+`;
+
+}
+
+        function setDifficulty(level) {
+            ai = new SuperAI(level);
+            document.querySelectorAll('.difficulty-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            if(document.getElementById('gameScreen').style.display === 'block') {
+                resetGame();
+            }
+        }
+
+        function saveAI() {
+            localStorage.setItem('aiData', JSON.stringify({ 
+                qTable: ai.qTable, 
+                games: ai.gamesPlayed, 
+                wins: ai.wins 
+            }));
+            alert('💾 ĐÃ LƯU AI!');
+        }
+
+        function loadAI() {
+            const data = localStorage.getItem('aiData');
+            if (data) {
+                const d = JSON.parse(data);
+                ai.qTable = d.qTable || {};
+                ai.gamesPlayed = d.games || 0;
+                ai.wins = d.wins || 0;
+                updateAIStats();
+                alert('📂 ĐÃ TẢI AI!');
+            }
+        }
+
+        function resetGame() {
+            playerHP = 100;
+            aiHP = 100;
+            gamePhase = 'select';
+            if(document.getElementById('gameScreen').style.display === 'block') {
+                initGame();
+            }
+        }
+
+        // ==================== KHỞI TẠO APP ====================
+        function initApp() {
+            loadTheme();
+        }
+        function autoSaveAI(){
+localStorage.setItem("stickman_ai", JSON.stringify(ai.qTable));
+}
+function autoLoadAI(){
+
+const data = localStorage.getItem("stickman_ai");
+
+if(data){
+ai.qTable = JSON.parse(data);
+console.log("AI memory loaded");
+}
+
+}
+
+        initApp();
+
+        // Export functions
+        window.handleLogin = handleLogin;
+        window.handleRegister = handleRegister;
+        window.startGame = startGame;
+        window.openShop = openShop;
+        window.openCollection = openCollection;
+        window.openRanking = openRanking;
+        window.openSettings = openSettings;
+        window.backToMenu = backToMenu;
+        window.logout = logout;
+        window.setTheme = setTheme;
+        window.openModal = openModal;
+        window.closeModal = closeModal;
+        window.selectCard = selectCard;
+        window.saveAI = saveAI;
+        window.loadAI = loadAI;
+        window.setDifficulty = setDifficulty;
+        window.resetGame = resetGame;
+        window.openComboModal = openComboModal;
+        window.closeComboModal = closeComboModal;
+        // Mở modal combo
+function openComboModal() {
+    document.getElementById('comboModal').classList.add('active');
+    const grid = document.getElementById('comboGrid');
+    
+    // Danh sách combo
+    const combos = [
+        { icon1: '🔥', icon2: '🌪️', name: 'FIRE + WIND', damage: 10, desc: 'Lửa + Gió → Bão lửa' },
+        { icon1: '❄️', icon2: '⚡', name: 'ICE + THUNDER', damage: 12, desc: 'Băng + Sét → Bão tuyết' },
+        { icon1: '👻', icon2: '👤', name: 'SHADOW + PHANTOM', damage: 15, desc: 'Bóng tối + Ma → Ám ảnh' },
+        { icon1: '🌍', icon2: '🔨', name: 'EARTH + HEAVY', damage: 12, desc: 'Đất + Đập → Động đất' },
+        { icon1: '🔥', icon2: '🌍', name: 'FIRE + EARTH', damage: 14, desc: 'Lửa + Đất → Núi lửa' },
+        { icon1: '🌪️', icon2: '❄️', name: 'WIND + ICE', damage: 13, desc: 'Gió + Băng → Bão tuyết' },
+        { icon1: '⭐', icon2: '✨', name: 'LIGHT + HOLY', damage: 12, desc: 'Ánh sáng + Thánh → Thần thánh' },
+        { icon1: '🌑', icon2: '🌀', name: 'DARK + CHAOS', damage: 16, desc: 'Bóng tối + Hỗn mang → Hủy diệt' },
+        { icon1: '⚡', icon2: '🐉', name: 'THUNDER + DRAGON', damage: 18, desc: 'Sét + Rồng → Long nộ' },
+        { icon1: '☄️', icon2: '🌀', name: 'COMET + CHAOS', damage: 17, desc: 'Sao chổi + Hỗn mang → Tận thế' }
+    ];
+    
+    grid.innerHTML = '';
+    combos.forEach(combo => {
+        grid.innerHTML += `
+            <div class="combo-item">
+                <div class="combo-icons">
+                    <span>${combo.icon1}</span>
+                    <span class="combo-arrow">→</span>
+                    <span>${combo.icon2}</span>
+                </div>
+                <div class="combo-info">
+                    <div class="combo-name">${combo.name}</div>
+                    <div class="combo-desc">${combo.desc}</div>
+                </div>
+                <div class="combo-damage">+${combo.damage}</div>
+            </div>
+        `;
+    });
+}
+
+// Đóng modal combo
+function closeComboModal() {
+    document.getElementById('comboModal').classList.remove('active');
+}
+
+    </script>
+    <!-- MODAL COMBO -->
+<div class="modal" id="comboModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>🔥 DANH SÁCH COMBO 🔥</h2>
+            <span class="close-btn" onclick="closeComboModal()">✖</span>
+        </div>
+        <div class="skills-grid" id="comboGrid" style="grid-template-columns: repeat(2, 1fr);"></div>
+    </div>
+</div>
+</body>
+</html>
